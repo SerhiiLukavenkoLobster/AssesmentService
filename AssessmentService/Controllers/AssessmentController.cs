@@ -23,16 +23,16 @@ namespace AssesmentService.Controllers
             _configuration = configuration;
         }
 
-        public ActionResult Get([FromServices]IConfiguration configuration)
-        {
-            var sb = new StringBuilder();
-            foreach (var env in configuration.GetChildren())
-            {
-                sb.AppendLine($"{env.Key}:{ env.Value}");
-            }
+        //public ActionResult Get([FromServices]IConfiguration configuration)
+        //{
+        //    var sb = new StringBuilder();
+        //    foreach (var env in configuration.GetChildren())
+        //    {
+        //        sb.AppendLine($"{env.Key}:{ env.Value}");
+        //    }
 
-            return Ok(sb.ToString());
-        }
+        //    return Ok(sb.ToString());
+        //}
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] UserAssessmentInput input)
