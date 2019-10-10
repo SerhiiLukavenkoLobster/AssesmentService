@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventHubs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -12,22 +13,28 @@ namespace AssesmentService.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AssesmentController : ControllerBase
+    public class AssessmentController : ControllerBase
     {
 
-        private readonly ILogger<AssesmentController> _logger;
+        private readonly ILogger<AssessmentController> _logger;
         private static EventHubClient eventHubClient;
         private const string EventHubConnectionString = "{Event Hubs connection string}";
         private const string EventHubName = "{Event Hub path/name}";
 
-        public AssesmentController(ILogger<AssesmentController> logger)
+        public AssessmentController(ILogger<AssessmentController> logger)
         {
             _logger = logger;
         }
 
-        public ActionResult Get()
+        public ActionResult Get([FromServices]IConfiguration configuration)
         {
-            return Ok();
+            var sb = new StringBuilder();
+            foreach (var env in configuration.GetChildren())
+            {
+                sb.AppendLine($"{env.Key}:{ env.Value}");
+            }
+
+            return Ok(sb.ToString());
         }
 
         [HttpPost]
@@ -92,7 +99,7 @@ namespace AssesmentService.Controllers
             AssessmentPassed,
             AssessmentFailed
         }
-        
+
         //[HttpGet]
         //public IEnumerable<WeatherForecast> Get()
         //{
