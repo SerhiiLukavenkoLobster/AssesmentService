@@ -12,15 +12,15 @@ namespace AssesmentService.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AssesmentController : ControllerBase
+    public class AssessmentController : ControllerBase
     {
 
-        private readonly ILogger<AssesmentController> _logger;
+        private readonly ILogger<AssessmentController> _logger;
         private static EventHubClient eventHubClient;
         private const string EventHubConnectionString = "{Event Hubs connection string}";
         private const string EventHubName = "{Event Hub path/name}";
 
-        public AssesmentController(ILogger<AssesmentController> logger)
+        public AssessmentController(ILogger<AssessmentController> logger)
         {
             _logger = logger;
         }
