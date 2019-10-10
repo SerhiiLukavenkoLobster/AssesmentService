@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.EventHubs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -25,9 +26,15 @@ namespace AssesmentService.Controllers
             _logger = logger;
         }
 
-        public ActionResult Get()
+        public ActionResult Get([FromServices]IConfiguration configuration)
         {
-            return Ok();
+            var sb = new StringBuilder();
+            foreach (var env in configuration.GetChildren())
+            {
+                sb.AppendLine($"{env.Key}:{ env.Value}");
+            }
+
+            return Ok(sb.ToString());
         }
 
         [HttpPost]
@@ -92,7 +99,7 @@ namespace AssesmentService.Controllers
             AssessmentPassed,
             AssessmentFailed
         }
-        
+
         //[HttpGet]
         //public IEnumerable<WeatherForecast> Get()
         //{
