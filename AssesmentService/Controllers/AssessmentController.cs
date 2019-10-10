@@ -17,13 +17,17 @@ namespace AssesmentService.Controllers
     {
 
         private readonly ILogger<AssessmentController> _logger;
-        private static EventHubClient eventHubClient;
+        private EventHubClient eventHubClient;
+        private IConfiguration _configuration;
+
         private const string EventHubConnectionString = "{Event Hubs connection string}";
         private const string EventHubName = "{Event Hub path/name}";
 
-        public AssessmentController(ILogger<AssessmentController> logger)
+
+        public AssessmentController(ILogger<AssessmentController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public ActionResult Get([FromServices]IConfiguration configuration)
@@ -66,11 +70,11 @@ namespace AssesmentService.Controllers
             };
         }
 
-        private static async Task SendEventToHubAsync(AssessmentEvent @event)
+        private async Task SendEventToHubAsync(AssessmentEvent @event)
         {
-            var connectionStringBuilder = new EventHubsConnectionStringBuilder(EventHubConnectionString)
+            var connectionStringBuilder = new EventHubsConnectionStringBuilder(_configuration["EventHubConnectionString"])
             {
-                EntityPath = EventHubName
+                EntityPath = _configuration["EventHubName"]
             };
 
             var eventHubClient = EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString());
