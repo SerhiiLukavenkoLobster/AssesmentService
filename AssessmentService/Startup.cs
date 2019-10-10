@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.EventHubs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +26,15 @@ namespace AssessmentService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton(x =>
+            {
+                var connectionStringBuilder = new EventHubsConnectionStringBuilder(Configuration["EventHubConnectionString"])
+                {
+                    EntityPath = Configuration["EventHubName"]
+                };
+
+                return EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

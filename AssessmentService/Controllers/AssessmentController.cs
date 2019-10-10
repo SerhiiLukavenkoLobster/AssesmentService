@@ -15,12 +15,12 @@ namespace AssesmentService.Controllers
     {
 
         private readonly ILogger<AssessmentController> _logger;
-        private IConfiguration _configuration;
+        private readonly EventHubClient _eventHubClient;
 
-        public AssessmentController(ILogger<AssessmentController> logger, IConfiguration configuration)
+        public AssessmentController(ILogger<AssessmentController> logger, EventHubClient eventHubClient)
         {
             _logger = logger;
-            _configuration = configuration;
+            _eventHubClient = eventHubClient;
         }
 
         [HttpPost]
@@ -54,15 +54,7 @@ namespace AssesmentService.Controllers
 
         private async Task SendEventToHubAsync(AssessmentEvent @event)
         {
-            var connectionStringBuilder = new EventHubsConnectionStringBuilder(_configuration["EventHubConnectionString"])
-            {
-                EntityPath = _configuration["EventHubName"]
-            };
-
-            var eventHubClient = EventHubClient.CreateFromConnectionString(connectionStringBuilder.ToString());
-
-            await eventHubClient.SendAsync(new EventData(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(@event))));
-
+            await _eventHubClient.SendAsync(new EventData(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(@event))));
         }
 
         public class UserAssessmentInput
