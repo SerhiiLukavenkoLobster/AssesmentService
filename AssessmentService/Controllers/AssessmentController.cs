@@ -23,17 +23,6 @@ namespace AssesmentService.Controllers
             _configuration = configuration;
         }
 
-        //public ActionResult Get([FromServices]IConfiguration configuration)
-        //{
-        //    var sb = new StringBuilder();
-        //    foreach (var env in configuration.GetChildren())
-        //    {
-        //        sb.AppendLine($"{env.Key}:{ env.Value}");
-        //    }
-
-        //    return Ok(sb.ToString());
-        //}
-
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] UserAssessmentInput input)
         {
@@ -58,7 +47,7 @@ namespace AssesmentService.Controllers
             {
                 UserId = input.UserId,
                 EventDate = DateTime.UtcNow,
-                EventType = eventType,
+                EventName = eventType.ToString(),
                 Meta = JsonConvert.SerializeObject(input)
             };
         }
@@ -87,7 +76,7 @@ namespace AssesmentService.Controllers
         {
             public Guid UserId { get; set; }
             public DateTime EventDate { get; set; }
-            public EventType EventType { get; set; }
+            public string EventName { get; set; }
             public string Meta { get; set; }
         }
 
@@ -96,18 +85,5 @@ namespace AssesmentService.Controllers
             AssessmentPassed,
             AssessmentFailed
         }
-
-        //[HttpGet]
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    var rng = new Random();
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = rng.Next(-20, 55),
-        //        //Summary = Summaries[rng.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
     }
 }
