@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +15,7 @@ namespace AssesmentService.Controllers
     {
 
         private readonly ILogger<AssessmentController> _logger;
-        private EventHubClient eventHubClient;
         private IConfiguration _configuration;
-
-        private const string EventHubConnectionString = "{Event Hubs connection string}";
-        private const string EventHubName = "{Event Hub path/name}";
-
 
         public AssessmentController(ILogger<AssessmentController> logger, IConfiguration configuration)
         {
