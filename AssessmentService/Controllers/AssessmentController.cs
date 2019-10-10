@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace AssessmentService.Controllers
+namespace AssesmentService.Controllers
 {
     [ApiController]
     [Route("[controller]")]
